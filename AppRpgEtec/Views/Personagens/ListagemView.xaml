@@ -5,13 +5,14 @@
              Title="ListagemView">
     <ScrollView>
         <VerticalStackLayout Padding="10, 0, 0, 0" VerticalOptions="FillAndExpand">
-            <ListView x:Name="listView" HasUnevenRows="True" ItemsSource="{Binding Personagens}">
+            <Button Command="{Binding NovoPersonagem}" Text="Novo" HorizontalOptions="FillAndExpand"></Button>
+                <ListView x:Name="listView" HasUnevenRows="True" ItemsSource="{Binding Personagens}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Padding="10">
-                                <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold" />
-                                <Label Text="{Binding PontosVida}" FontSize="14" />
+                                <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
+                                <Label Text="{Binding PontosVida}" FontSize="14"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

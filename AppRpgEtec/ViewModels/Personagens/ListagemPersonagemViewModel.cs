@@ -1,18 +1,20 @@
 ﻿using AppRpgEtec.Models;
 using AppRpgEtec.Services.Personagens;
+using AppRpgEtec.Views.Personagens;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace AppRpgEtec.ViewModels.Personagens
 {
     public class ListagemPersonagemViewModel : BaseViewModel
     {
         private PersonagemService pService;
-        private ObservableCollection<Personagem> Personagens { get; set; }
+        public ObservableCollection<Personagem> Personagens { get; set; }
         
         public ListagemPersonagemViewModel()
         {
@@ -21,7 +23,11 @@ namespace AppRpgEtec.ViewModels.Personagens
             Personagens = new ObservableCollection<Personagem>();
 
             _ = ObterPersonagens();
+
+            NovoPersonagem = new Command(async () => { await ExibirCadastroPersonagem(); });
         }
+
+        public ICommand NovoPersonagem { get; }
 
         public async Task ObterPersonagens()
         {
@@ -32,7 +38,21 @@ namespace AppRpgEtec.ViewModels.Personagens
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + " [Obter Personagens] Detalhes: " + ex.InnerException, "Ok");
+            }
+        }
+
+        public async Task ExibirCadastroPersonagem()
+        {
+            try
+            {
+                //await Shell.Current.GoToAsync("cadastroPersonagemView");
+                Application.Current.MainPage = new CadastroPersonagemView();
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage
+                    .DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
             }
         }
     }

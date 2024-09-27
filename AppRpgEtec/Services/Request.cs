@@ -67,9 +67,9 @@ namespace AppRpgEtec.Services
             HttpResponseMessage response = await httpClient.GetAsync(uri);
             string serialized = await response.Content.ReadAsStringAsync();
 
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.NoContent)
                 throw new Exception(serialized);
-            
+
             TResult result = await Task.Run(() => JsonConvert.DeserializeObject<TResult>(serialized));
             return result;
         }

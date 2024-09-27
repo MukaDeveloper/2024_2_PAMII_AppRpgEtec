@@ -74,7 +74,9 @@ namespace AppRpgEtec.ViewModels.Usuarios
                     await Application.Current.MainPage
                         .DisplayAlert("Informação", mensagem, "Ok");
 
+                    // await DirecionarParaListagem();
                     Application.Current.MainPage = new ListagemView();
+                    // Application.Current.MainPage.Navigation.PushAsync(new ListagemView());
                 }
                 else
                 {
@@ -121,6 +123,18 @@ namespace AppRpgEtec.ViewModels.Usuarios
             try
             {
                 await Application.Current.MainPage.Navigation.PushAsync(new CadastroView());
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Informação", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
+            }
+        }
+
+        public async Task DirecionarParaListagem()
+        {
+            try
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new ListagemView());
             }
             catch (Exception ex)
             {

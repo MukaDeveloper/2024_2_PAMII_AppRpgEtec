@@ -10,7 +10,7 @@ namespace AppRpgEtec.Models
     public class Personagem
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
         public int PontosVida { get; set; }
         public int Forca { get; set; }
         public int Defesa { get; set; }
