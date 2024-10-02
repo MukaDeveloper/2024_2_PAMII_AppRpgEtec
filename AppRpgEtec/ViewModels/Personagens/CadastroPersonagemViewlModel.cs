@@ -1,17 +1,13 @@
 ﻿using AppRpgEtec.Models;
 using AppRpgEtec.Services.Personagens;
 using AppRpgEtec.Models.Enuns;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using AppRpgEtec.Views.Personagens;
 
 namespace AppRpgEtec.ViewModels.Personagens
 {
+    [QueryProperty("PersonagemSelecionadoId", "pId")]
     public class CadastroPersonagemViewModel : BaseViewModel
     {
         private PersonagemService pService;
@@ -40,6 +36,7 @@ namespace AppRpgEtec.ViewModels.Personagens
         private int derrotas;
         private ObservableCollection<TipoClasse> listaTiposClasse;
         private TipoClasse tipoClasseSelecionado;
+        private string personagemSelecionadoId;
 
         public int Id
         {
@@ -144,6 +141,18 @@ namespace AppRpgEtec.ViewModels.Personagens
             }
         }
 
+        public string PersonagemSelecionadoId
+        {
+            set
+            {
+                if (value != null)
+                {
+                    personagemSelecionadoId = Uri.UnescapeDataString(value);
+                    CarregarPersonagem();
+                }
+            }
+        }
+
         public async Task ObterClasses()
         {
             try
@@ -179,12 +188,14 @@ namespace AppRpgEtec.ViewModels.Personagens
                 };
                 if (model.Id == 0)
                     await pService.PostPersonagemAsync(model);
+                else
+                    await pService.PutPersonagemAsync(model);
 
                 await Application.Current.MainPage
                     .DisplayAlert("Mensagem", "Dados salvos com sucesso!", "Ok");
 
-                // await Shell.Current.GoToAsync("..");
-                Application.Current.MainPage = new ListagemView();
+                await Shell.Current.GoToAsync("..");
+                // Application.Current.MainPage = new ListagemView();
             }
             catch (Exception ex)
             {
@@ -192,9 +203,34 @@ namespace AppRpgEtec.ViewModels.Personagens
             }
         }
 
-        private async void CancelarCadastro()
+        public async void CancelarCadastro()
         {
-            Application.Current.MainPage = new ListagemView();
+            await Shell.Current.GoToAsync("..");
+            // Application.Current.MainPage = new ListagemView();
+        }
+
+        public async void CarregarPersonagem()
+        {
+            try
+            {
+                Personagem p = await pService.GetPersonagemAsync(int.Parse(personagemSelecionadoId));
+
+                this.Nome = p.Nome;
+                this.PontosVida = p.PontosVida;
+                this.Defesa = p.Defesa;
+                this.Derrotas = p.Derrotas;
+                this.Disputas = p.Disputas;
+                this.Forca = p.Forca;
+                this.Inteligencia = p.Inteligencia;
+                this.Vitorias = p.Vitorias;
+                this.Id = p.Id;
+
+                TipoClasseSelecionado = this.ListaTiposClasse.FirstOrDefault(tClasse => tClasse.Id == (int)p.Classe);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
+            }
         }
     }
 }

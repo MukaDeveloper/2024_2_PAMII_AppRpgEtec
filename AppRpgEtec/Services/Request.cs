@@ -10,9 +10,10 @@ namespace AppRpgEtec.Services
 {
     public class Request
     {
-        public async Task<int> PostReturnIntAsync<TResult>(string uri, TResult data)
+        public async Task<int> PostReturnIntAsync<TResult>(string uri, TResult data, string token)
         {
             HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -23,8 +24,9 @@ namespace AppRpgEtec.Services
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return int.Parse(serialized);
             else
-                return 0;
+                throw new Exception(serialized);
         }
+
         public async Task<TResult> PostAsync<TResult>(string uri, TResult data, string token)
         {
             HttpClient httpClient = new HttpClient();
