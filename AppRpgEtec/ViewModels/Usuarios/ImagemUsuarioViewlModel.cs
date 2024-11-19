@@ -13,7 +13,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
     public class ImagemUsuarioViewlModel
     {
         private UsuarioService uService;
-        private static string conexaoAzureStorage = "DefaultEndpointsProtocol=https;AccountName=etecstorageazurestudents;AccountKey=WlXzdnr7VEmuixkU7G6P2EwMHzJusPpi7BpGq0TH2JFeZrzPnmPhi+ay4FMGxVWu1tiCtMgfqLy5+AStA+eUUQ==;EndpointSuffix=core.windows.net";
+        private static string conexaoAzureStorage = "";
         private static string container = "arquivos";
 
         public ImagemUsuarioViewlModel()
