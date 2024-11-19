@@ -1,4 +1,4 @@
-namespace AppRpgEtec.Views.Personagens;
+namespace AppRpgEtec.Views.Disputas;
 
 public partial class ListagemView : ContentPage
 {
